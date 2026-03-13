@@ -1,7 +1,8 @@
 import './App.css'
+import AppRoute from './routes/AppRoute.tsx'
 
 function App() {
-  return <>Work flow</>
+  return <AppRoute />
 }
 
 export default App
