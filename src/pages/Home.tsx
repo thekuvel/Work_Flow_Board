@@ -9,17 +9,50 @@ import { useState } from 'react'
 function Home() {
   type FormValueType = {
     title?: string
+    description?: string
+    status?: string
+    priority?: string
+    assignee?: string
+    tags?: string
+    createdAt?: string
+    updatedAt?: string
   }
 
-  const [formValue, setFormValue] = useState<FormValueType>({ title: '' })
+  const [formValue, setFormValue] = useState<FormValueType>({
+    title: '',
+    description: '',
+    status: '',
+    priority: '',
+    assignee: '',
+    tags: '',
+    createdAt: '',
+    updatedAt: '',
+  })
 
-  function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleOnChange(
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+      | React.ChangeEvent<HTMLSelectElement>
+  ) {
     e.preventDefault()
     setFormValue({ ...formValue, [e.target.id]: e.target.value })
   }
 
   function onClickNewTask(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
+    console.log('New Task')
+  }
+
+  function onClickSaveTask(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault()
+    setFormValue({ ...formValue, createdAt: Date().split('GMT')[0] })
+    console.log(formValue)
+  }
+
+  function onClickUpdateTask(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault()
+    setFormValue({ ...formValue, updatedAt: Date().split('GMT')[0] })
     console.log(formValue)
   }
 
@@ -59,6 +92,7 @@ function Home() {
         </div>
       </div>
 
+      {/* Form */}
       <div className="border rounded p-2">
         <form>
           <TextInput
@@ -74,18 +108,24 @@ function Home() {
             id="description"
             placeholder="Task details"
             rowCount={2}
+            value={formValue.description || ''}
+            onChange={handleOnChange}
           />
 
           <SelectInput
             label="Status:"
+            id="status"
             optionLabel={['Backlog', 'In Progress', 'Done']}
             optionValue={['backlog', 'inProgress', 'done']}
+            onChange={handleOnChange}
           />
 
           <SelectInput
             label="Priority:"
+            id="priority"
             optionLabel={['Low', 'Medium', 'High']}
             optionValue={['low', 'medium', 'high']}
+            onChange={handleOnChange}
           />
 
           <TextInput
@@ -100,13 +140,13 @@ function Home() {
               label="Save"
               bgColor="bg-green-500"
               textColor="text-white"
-              onClick={onClickNewTask}
+              onClick={onClickSaveTask}
             />
             <Button
               label="Update"
               bgColor="bg-orange-500"
               textColor="text-white"
-              // onClick={onClickNewTask}
+              onClick={onClickUpdateTask}
             />
             <Button
               label="Delete"

@@ -4,6 +4,8 @@ type TextAreaInputProps = {
   placeholder?: string
   rowCount?: number
   colCount?: number
+  value?: string
+  onChange?: React.ChangeEventHandler<HTMLTextAreaElement>
 }
 
 export default function TextAreaInput(textAreaInput: TextAreaInputProps) {
@@ -15,6 +17,8 @@ export default function TextAreaInput(textAreaInput: TextAreaInputProps) {
         placeholder={textAreaInput.placeholder}
         rows={textAreaInput.rowCount}
         cols={textAreaInput.colCount}
+        value={textAreaInput.value}
+        onChange={textAreaInput.onChange}
       ></textarea>
     </div>
   )
