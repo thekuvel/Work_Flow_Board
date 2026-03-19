@@ -116,106 +116,108 @@ function FormModal({
   }, [task])
 
   return (
-    <div className="border rounded p-2">
-      <form>
-        <TextInput
-          label="Title"
-          placeholder="Task Title"
-          id="title"
-          value={formValue.title || ''}
-          onChange={handleOnChange}
-        />
-
-        <TextAreaInput
-          label="Description"
-          id="description"
-          placeholder="Task details"
-          rowCount={2}
-          value={formValue.description || ''}
-          onChange={handleOnChange}
-        />
-
-        <SelectInput
-          label="Status:"
-          id="status"
-          optionLabel={['Backlog', 'In Progress', 'Done']}
-          optionValue={['backlog', 'inProgress', 'done']}
-          onChange={handleOnChange}
-          value={formValue.status || ''}
-        />
-
-        <SelectInput
-          label="Priority:"
-          id="priority"
-          optionLabel={['Low', 'Medium', 'High']}
-          optionValue={['low', 'medium', 'high']}
-          onChange={handleOnChange}
-          value={formValue.priority || ''}
-        />
-
-        <TextInput
-          label="Assignee"
-          placeholder="Assign to"
-          id="assignee"
-          onChange={handleOnChange}
-          value={formValue.assignee || ''}
-        />
-
-        <div>
-          <p>
-            Created at:{' '}
-            {formValue.createdAt
-              ? new Date(formValue.createdAt).toLocaleString()
-              : 'N/A'}
-          </p>
-          <p>
-            Last updated at:{' '}
-            {formValue.updatedAt
-              ? new Date(formValue.updatedAt).toLocaleString()
-              : 'N/A'}
-          </p>
-        </div>
-
-        <div className="flex gap-2">
-          {formType == 'newForm' ? (
-            <Button
-              label="Save"
-              bgColor="bg-green-500"
-              textColor="text-white"
-              onClick={onClickSaveTask}
-            />
-          ) : (
-            ''
-          )}
-
-          {formType == 'updateForm' ? (
-            <>
-              {' '}
-              <Button
-                label="Update"
-                bgColor="bg-orange-500"
-                textColor="text-white"
-                onClick={onClickUpdateTask}
-              />
-              <Button
-                label="Delete"
-                bgColor="bg-red-500"
-                textColor="text-white"
-                onClick={onClickDeleteTask}
-              />
-            </>
-          ) : (
-            ''
-          )}
-
-          <Button
-            label="Cancel"
-            textColor="text-red-500"
-            borderColor="border border-red-500"
-            onClick={onClickCancelTask}
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+        <form>
+          <TextInput
+            label="Title"
+            placeholder="Task Title"
+            id="title"
+            value={formValue.title || ''}
+            onChange={handleOnChange}
           />
-        </div>
-      </form>
+
+          <TextAreaInput
+            label="Description"
+            id="description"
+            placeholder="Task details"
+            rowCount={2}
+            value={formValue.description || ''}
+            onChange={handleOnChange}
+          />
+
+          <SelectInput
+            label="Status:"
+            id="status"
+            optionLabel={['Backlog', 'In Progress', 'Done']}
+            optionValue={['backlog', 'inProgress', 'done']}
+            onChange={handleOnChange}
+            value={formValue.status || ''}
+          />
+
+          <SelectInput
+            label="Priority:"
+            id="priority"
+            optionLabel={['Low', 'Medium', 'High']}
+            optionValue={['low', 'medium', 'high']}
+            onChange={handleOnChange}
+            value={formValue.priority || ''}
+          />
+
+          <TextInput
+            label="Assignee"
+            placeholder="Assign to"
+            id="assignee"
+            onChange={handleOnChange}
+            value={formValue.assignee || ''}
+          />
+
+          <div>
+            <p>
+              Created at:{' '}
+              {formValue.createdAt
+                ? new Date(formValue.createdAt).toLocaleString()
+                : 'N/A'}
+            </p>
+            <p>
+              Last updated at:{' '}
+              {formValue.updatedAt
+                ? new Date(formValue.updatedAt).toLocaleString()
+                : 'N/A'}
+            </p>
+          </div>
+
+          <div className="flex gap-2">
+            {formType == 'newForm' ? (
+              <Button
+                label="Save"
+                bgColor="bg-green-500"
+                textColor="text-white"
+                onClick={onClickSaveTask}
+              />
+            ) : (
+              ''
+            )}
+
+            {formType == 'updateForm' ? (
+              <>
+                {' '}
+                <Button
+                  label="Update"
+                  bgColor="bg-orange-500"
+                  textColor="text-white"
+                  onClick={onClickUpdateTask}
+                />
+                <Button
+                  label="Delete"
+                  bgColor="bg-red-500"
+                  textColor="text-white"
+                  onClick={onClickDeleteTask}
+                />
+              </>
+            ) : (
+              ''
+            )}
+
+            <Button
+              label="Cancel"
+              textColor="text-red-500"
+              borderColor="border border-red-500"
+              onClick={onClickCancelTask}
+            />
+          </div>
+        </form>
+      </div>
     </div>
   )
 }

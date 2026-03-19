@@ -4,7 +4,8 @@ type SelectInputProps = {
   optionValue: string[]
   optionLabel: string[]
   onChange?: React.ChangeEventHandler<HTMLSelectElement>
-  value?: string
+  value?: string | string[]
+  multiple?: boolean
 }
 
 export default function SelectInput(selectInput: SelectInputProps) {
@@ -12,6 +13,7 @@ export default function SelectInput(selectInput: SelectInputProps) {
     <div className="flex gap-2">
       <label htmlFor={selectInput.id}>{selectInput.label}</label>
       <select
+        multiple={selectInput.multiple}
         id={selectInput.id}
         className="text-gray-500"
         onChange={selectInput.onChange}
