@@ -21,10 +21,12 @@ function FormModal({
   task,
   loadTask,
   setDisplayForm,
+  formType,
 }: {
   task?: FormValueType
   loadTask: () => void
   setDisplayForm: () => void
+  formType: string
 }) {
   const [formValue, setFormValue] = useState<FormValueType>(
     task || {
@@ -64,12 +66,14 @@ function FormModal({
 
   async function onClickSaveTask(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
-    setFormValue({ ...formValue, createdAt: Date().split('GMT')[0] })
-    const res = await addTask(formValue)
+    const isoDate = new Date().toISOString()
+    const newTask = { ...formValue, createdAt: isoDate }
+    const res = await addTask(newTask)
     if (res) {
-      console.log('Task saved')
+      console.log('Task saved', isoDate)
       resetForm()
       loadTask()
+      setDisplayForm()
     } else {
       console.log('Some thing went wrong')
     }
@@ -77,11 +81,12 @@ function FormModal({
 
   async function onClickUpdateTask(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
-    setFormValue({ ...formValue, updatedAt: Date().split('GMT')[0] })
-    const res = await updateTask(formValue)
+    const updatedTask = { ...formValue, updatedAt: Date().split('GMT')[0] }
+    const res = await updateTask(updatedTask)
     console.log(res)
     resetForm()
     loadTask()
+    setDisplayForm()
   }
 
   async function onClickDeleteTask(e: React.MouseEvent<HTMLButtonElement>) {
@@ -90,6 +95,7 @@ function FormModal({
       await deleteTask(formValue.id)
       resetForm()
       loadTask()
+      setDisplayForm()
     } else {
       console.log('No item selected to delete')
     }
@@ -155,25 +161,53 @@ function FormModal({
           value={formValue.assignee || ''}
         />
 
+        <div>
+          <p>
+            Created at:{' '}
+            {formValue.createdAt
+              ? new Date(formValue.createdAt).toLocaleString()
+              : 'N/A'}
+          </p>
+          <p>
+            Last updated at:{' '}
+            {formValue.updatedAt
+              ? new Date(formValue.updatedAt).toLocaleString()
+              : 'N/A'}
+          </p>
+        </div>
+
         <div className="flex gap-2">
-          <Button
-            label="Save"
-            bgColor="bg-green-500"
-            textColor="text-white"
-            onClick={onClickSaveTask}
-          />
-          <Button
-            label="Update"
-            bgColor="bg-orange-500"
-            textColor="text-white"
-            onClick={onClickUpdateTask}
-          />
-          <Button
-            label="Delete"
-            bgColor="bg-red-500"
-            textColor="text-white"
-            onClick={onClickDeleteTask}
-          />
+          {formType == 'newForm' ? (
+            <Button
+              label="Save"
+              bgColor="bg-green-500"
+              textColor="text-white"
+              onClick={onClickSaveTask}
+            />
+          ) : (
+            ''
+          )}
+
+          {formType == 'updateForm' ? (
+            <>
+              {' '}
+              <Button
+                label="Update"
+                bgColor="bg-orange-500"
+                textColor="text-white"
+                onClick={onClickUpdateTask}
+              />
+              <Button
+                label="Delete"
+                bgColor="bg-red-500"
+                textColor="text-white"
+                onClick={onClickDeleteTask}
+              />
+            </>
+          ) : (
+            ''
+          )}
+
           <Button
             label="Cancel"
             textColor="text-red-500"

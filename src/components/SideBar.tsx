@@ -5,10 +5,10 @@ function SideBar() {
     <div>
       <ul className="grid gap-5">
         <li>
-          <Link to="/home">Home</Link>
+          <Link to="/">Home</Link>
         </li>
         <li>
-          <Link to="/">Setting</Link>
+          <Link to="/setting">Setting</Link>
         </li>
       </ul>
     </div>

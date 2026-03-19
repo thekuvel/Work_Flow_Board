@@ -22,11 +22,13 @@ function Home() {
   const [tasks, setTasks] = useState<FormValueType[]>([{}])
   const [selectedTask, setSelectedTask] = useState<FormValueType>()
   const [displayForm, setDisplayForm] = useState<boolean>(false)
+  const [formType, setFormType] = useState<string>('')
 
   function onClickNewTask(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
     setSelectedTask({})
     setDisplayForm(true)
+    setFormType('newForm')
   }
 
   const loadTask = async () => {
@@ -74,6 +76,7 @@ function Home() {
                   handleOnClick={() => {
                     setSelectedTask(task)
                     setDisplayForm(true)
+                    setFormType('updateForm')
                   }}
                 />
               )
@@ -92,6 +95,7 @@ function Home() {
                   handleOnClick={() => {
                     setSelectedTask(task)
                     setDisplayForm(true)
+                    setFormType('updateForm')
                   }}
                 />
               )
@@ -108,6 +112,7 @@ function Home() {
                   handleOnClick={() => {
                     setSelectedTask(task)
                     setDisplayForm(true)
+                    setFormType('updateForm')
                   }}
                 />
               )
@@ -121,6 +126,7 @@ function Home() {
           task={selectedTask}
           loadTask={loadTask}
           setDisplayForm={() => setDisplayForm(false)}
+          formType={formType}
         />
       )}
     </div>
