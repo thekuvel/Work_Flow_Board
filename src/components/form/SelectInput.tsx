@@ -4,6 +4,7 @@ type SelectInputProps = {
   optionValue: string[]
   optionLabel: string[]
   onChange?: React.ChangeEventHandler<HTMLSelectElement>
+  value?: string
 }
 
 export default function SelectInput(selectInput: SelectInputProps) {
@@ -14,6 +15,7 @@ export default function SelectInput(selectInput: SelectInputProps) {
         id={selectInput.id}
         className="text-gray-500"
         onChange={selectInput.onChange}
+        value={selectInput.value}
       >
         <option value="">Select</option>
         {selectInput.optionLabel.map((label, index) => (

@@ -2,59 +2,43 @@ import type React from 'react'
 import TaskCard from '../components/TaskCard.tsx'
 import Button from '../components/Button.tsx'
 import TextInput from '../components/form/TextInput.tsx'
-import SelectInput from '../components/form/SelectInput.tsx'
-import TextAreaInput from '../components/form/TextAreaInput.tsx'
-import { useState } from 'react'
+import { startTransition, useEffect, useState } from 'react'
+import { getAllTask } from '../lib/idb.ts'
+import FormModal from '../components/FormModal.tsx'
+
+type FormValueType = {
+  id?: number
+  title?: string
+  description?: string
+  status?: string
+  priority?: string
+  assignee?: string
+  tags?: string
+  createdAt?: string
+  updatedAt?: string
+}
 
 function Home() {
-  type FormValueType = {
-    title?: string
-    description?: string
-    status?: string
-    priority?: string
-    assignee?: string
-    tags?: string
-    createdAt?: string
-    updatedAt?: string
-  }
-
-  const [formValue, setFormValue] = useState<FormValueType>({
-    title: '',
-    description: '',
-    status: '',
-    priority: '',
-    assignee: '',
-    tags: '',
-    createdAt: '',
-    updatedAt: '',
-  })
-
-  function handleOnChange(
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLTextAreaElement>
-      | React.ChangeEvent<HTMLSelectElement>
-  ) {
-    e.preventDefault()
-    setFormValue({ ...formValue, [e.target.id]: e.target.value })
-  }
+  const [tasks, setTasks] = useState<FormValueType[]>([{}])
+  const [selectedTask, setSelectedTask] = useState<FormValueType>()
+  const [displayForm, setDisplayForm] = useState<boolean>(false)
 
   function onClickNewTask(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
-    console.log('New Task')
+    setSelectedTask({})
+    setDisplayForm(true)
   }
 
-  function onClickSaveTask(e: React.MouseEvent<HTMLButtonElement>) {
-    e.preventDefault()
-    setFormValue({ ...formValue, createdAt: Date().split('GMT')[0] })
-    console.log(formValue)
+  const loadTask = async () => {
+    const res = await getAllTask()
+    startTransition(() => {
+      setTasks(res)
+    })
   }
 
-  function onClickUpdateTask(e: React.MouseEvent<HTMLButtonElement>) {
-    e.preventDefault()
-    setFormValue({ ...formValue, updatedAt: Date().split('GMT')[0] })
-    console.log(formValue)
-  }
+  useEffect(() => {
+    loadTask()
+  }, [])
 
   return (
     <div>
@@ -80,89 +64,65 @@ function Home() {
           <h2 className="mb-10 text-center border-b border-b-gray-300">
             Backlog
           </h2>
-          <TaskCard />
+          {/* <TaskCard /> */}
+          {tasks.map(
+            (task, i) =>
+              task.status == 'backlog' && (
+                <TaskCard
+                  key={i}
+                  task={task}
+                  handleOnClick={() => {
+                    setSelectedTask(task)
+                    setDisplayForm(true)
+                  }}
+                />
+              )
+          )}
         </div>
         <div className="p-2">
           <h2 className="mb-10 text-center border-b border-b-gray-300">
             In Progress
           </h2>
+          {tasks.map(
+            (task, i) =>
+              task.status == 'inProgress' && (
+                <TaskCard
+                  key={i}
+                  task={task}
+                  handleOnClick={() => {
+                    setSelectedTask(task)
+                    setDisplayForm(true)
+                  }}
+                />
+              )
+          )}
         </div>
         <div className="p-2">
           <h2 className="mb-10 text-center border-b border-b-gray-300">Done</h2>
+          {tasks.map(
+            (task, i) =>
+              task.status == 'done' && (
+                <TaskCard
+                  key={i}
+                  task={task}
+                  handleOnClick={() => {
+                    setSelectedTask(task)
+                    setDisplayForm(true)
+                  }}
+                />
+              )
+          )}
         </div>
       </div>
 
       {/* Form */}
-      <div className="border rounded p-2">
-        <form>
-          <TextInput
-            label="Title"
-            placeholder="Task Title"
-            id="title"
-            value={formValue.title || ''}
-            onChange={handleOnChange}
-          />
-
-          <TextAreaInput
-            label="Description"
-            id="description"
-            placeholder="Task details"
-            rowCount={2}
-            value={formValue.description || ''}
-            onChange={handleOnChange}
-          />
-
-          <SelectInput
-            label="Status:"
-            id="status"
-            optionLabel={['Backlog', 'In Progress', 'Done']}
-            optionValue={['backlog', 'inProgress', 'done']}
-            onChange={handleOnChange}
-          />
-
-          <SelectInput
-            label="Priority:"
-            id="priority"
-            optionLabel={['Low', 'Medium', 'High']}
-            optionValue={['low', 'medium', 'high']}
-            onChange={handleOnChange}
-          />
-
-          <TextInput
-            label="Assignee"
-            placeholder="Assign to"
-            id="assignee"
-            onChange={handleOnChange}
-          />
-
-          <div className="flex gap-2">
-            <Button
-              label="Save"
-              bgColor="bg-green-500"
-              textColor="text-white"
-              onClick={onClickSaveTask}
-            />
-            <Button
-              label="Update"
-              bgColor="bg-orange-500"
-              textColor="text-white"
-              onClick={onClickUpdateTask}
-            />
-            <Button
-              label="Delete"
-              bgColor="bg-red-500"
-              textColor="text-white"
-              // onClick={onClickNewTask}
-            />
-            <Button
-              label="Cancel"
-              textColor="text-red-500"
-              borderColor="border border-red-500"
-              // onClick={onClickNewTask}
-            />
-          </div>
-        </form>
-      </div>
+      {displayForm && (
+        <FormModal
+          task={selectedTask}
+          loadTask={loadTask}
+          setDisplayForm={() => setDisplayForm(false)}
+        />
+      )}
     </div>
   )
 }
