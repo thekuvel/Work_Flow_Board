@@ -4,7 +4,7 @@ A web app to manage tasks
 
 Currently hosted at
 
-- [xyz.netlify.app](https:xyz.netlify.app)
+- [workflowboard.netlify.app](https://workflowboard.netlify.app/)
 
 ## Packages used
 
@@ -41,4 +41,4 @@ Matching tasks will be displayed
 Filter:
 Click "Filter"
 Select "Available filter option"
-Maatching task will be displayed
+Matching task will be displayed
