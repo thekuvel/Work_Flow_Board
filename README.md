@@ -8,7 +8,7 @@ Currently hosted at
 
 ## Packages used
 
-DND, Tailwind CSS
+idb, Tailwind CSS
 
 ## How to use the app
 

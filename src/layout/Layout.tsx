@@ -8,10 +8,10 @@ function Layout() {
       <div className="py-5 col-span-12">
         <Header />
       </div>
-      <div className="py-5 col-span-2">
+      <div className="hidden md:block py-5 col-span-2">
         <SideBar />
       </div>
-      <div className="py-5 col-span-10">
+      <div className="py-5 col-span-12 md:col-span-10">
         <Outlet />
       </div>
     </div>

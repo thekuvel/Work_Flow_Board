@@ -165,7 +165,7 @@ function Home() {
   return (
     <div>
       {/* Search and filter */}
-      <div className="my-2 flex gap-2 justify-end items-center">
+      <div className="my-2 grid gap-2 md:justify-end justify-center items-center">
         <TextInput
           gridOrFlex="flex gap-2"
           label="Search:"
@@ -227,7 +227,7 @@ function Home() {
       </div>
 
       {/* Borad view */}
-      <div className="grid grid-cols-3">
+      <div className="grid lg:grid-cols-3">
         <div className="p-2">
           <h2 className="mb-10 text-center border-b border-b-gray-300">
             Backlog
