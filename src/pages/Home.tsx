@@ -78,8 +78,7 @@ function Home() {
     setSearchParams(params)
   }
 
-  function handleSearch(e: React.MouseEvent<HTMLButtonElement>) {
-    e.preventDefault()
+  const performSearch = () => {
     console.log(filterSort)
     updateUrlParams(filterSort)
 
@@ -142,6 +141,17 @@ function Home() {
 
     console.log(filteredTask)
     setFilteredTasks(filteredTask)
+  }
+
+  function handleSearch(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault()
+    performSearch()
+  }
+
+  function handleClearSearch(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault()
+    setSearchParams()
+    setFilterSort({})
   }
 
   function onClickNewTask(e: React.MouseEvent<HTMLButtonElement>) {
@@ -219,7 +229,12 @@ function Home() {
           onClick={handleSearch}
         />
         <Button
-          label="New Task"
+          label="Clear search"
+          borderColor="border border-blue-500"
+          onClick={handleClearSearch}
+        />
+        <Button
+          label="Create New Task"
           bgColor="bg-blue-500"
           textColor="text-white"
           onClick={onClickNewTask}
